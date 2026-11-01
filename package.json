@@ -1,0 +1,32 @@
+{
+  "name": "@felipewatter/provenance-gate",
+  "version": "0.1.0",
+  "description": "Offline DSSE + Ed25519 release provenance verification with threshold signatures and exact artifact policies",
+  "private": false,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "provenance-gate": "./src/cli.js"
+  },
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "SECURITY.md",
+    "LICENSE",
+    "docs"
+  ],
+  "license": "MIT",
+  "author": "Felipe Watter",
+  "scripts": {
+    "test": "node --test --test-concurrency=1 test/*.test.js",
+    "check": "node --check src/cli.js && node --check src/index.js && node --check src/strict-json.js && node --check src/io.js",
+    "verify-project": "npm run check && npm test && npm audit --audit-level=high",
+    "prepack": "npm run check",
+    "demo": "node scripts/demo.mjs"
+  }
+}

@@ -1,0 +1,5 @@
+* text=auto
+*.pem -text
+*.png binary
+*.jpg binary
+*.zip binary
