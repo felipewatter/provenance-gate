@@ -27,6 +27,8 @@ jobs:
         run: npm run check
       - name: Cryptographic, CLI and adversarial regression tests
         run: npm test
+      - name: Demonstrate 2-of-2 signature verification and tamper rejection
+        run: npm run demo
       - name: Package contents verification
         run: npm pack --dry-run --ignore-scripts
       - name: Dependency audit
