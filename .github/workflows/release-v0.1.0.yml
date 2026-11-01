@@ -1,0 +1,52 @@
+name: Publish Provenance Gate v0.1.0
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/release-v0.1.0.yml
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    name: Publish verified v0.1.0
+    if: github.repository == 'felipewatter/provenance-gate'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main and release notes
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 0
+      - name: Verify source commit and content
+        env:
+          RELEASE_COMMIT: 2b8517d3979adcde6a95cdf96c72ddd13cea4301
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor "$RELEASE_COMMIT" HEAD
+          test -s .github/release-notes/v0.1.0.md
+          git show "$RELEASE_COMMIT:package.json" | grep -q '"version": "0.1.0"'
+          test -s LICENSE
+          test -s SECURITY.md
+          test -s docs/THREAT_MODEL.md
+      - name: Publish stable GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_COMMIT: 2b8517d3979adcde6a95cdf96c72ddd13cea4301
+        run: |
+          set -euo pipefail
+          if gh release view v0.1.0 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo 'v0.1.0 already published; refusing to overwrite'
+            exit 0
+          fi
+          if git ls-remote --tags origin refs/tags/v0.1.0 | grep -q .; then
+            echo 'Unexpected pre-existing release tag; refusing to move it'
+            exit 1
+          fi
+          gh release create v0.1.0 \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$RELEASE_COMMIT" \
+            --title "Provenance Gate v0.1.0 — Cryptographic Release Admission & Provenance Policies" \
+            --notes-file .github/release-notes/v0.1.0.md \
+            --latest
