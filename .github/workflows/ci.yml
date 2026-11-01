@@ -1,0 +1,33 @@
+name: CI
+on:
+  push:
+    branches: [main, 'feature/**', 'security/**']
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  test:
+    name: Node ${{ matrix.node }} / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node: [22, 24]
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - name: Install with lifecycle scripts disabled
+        run: npm ci --ignore-scripts --no-fund --no-audit
+      - name: Syntax validation
+        run: npm run check
+      - name: Cryptographic, CLI and adversarial regression tests
+        run: npm test
+      - name: Package contents verification
+        run: npm pack --dry-run --ignore-scripts
+      - name: Dependency audit
+        run: npm audit --audit-level=high

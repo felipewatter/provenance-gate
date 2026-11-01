@@ -1,0 +1,14 @@
+node_modules/
+coverage/
+.nyc_output/
+*.tgz
+*.pem
+!*.pub.pem
+*.pub.pem
+*.attestation.json
+*.signed.json
+.env
+.env.*
+!.env.example
+.DS_Store
+demo/
