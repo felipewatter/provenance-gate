@@ -1,5 +1,7 @@
 # Provenance Gate
 
+[![CI](https://github.com/felipewatter/provenance-gate/actions/workflows/ci.yml/badge.svg)](https://github.com/felipewatter/provenance-gate/actions/workflows/ci.yml)
+
 **Controle criptográfico de admissão de releases com DSSE, Ed25519, atestações in-toto, políticas de proveniência e quórum de assinaturas.**
 
 > **Estado: v0.1.0 — projeto educacional/experimental de segurança da cadeia de suprimentos de software.** Sem auditoria independente. O uso do formato SLSA Provenance v1 **não significa** SLSA Level 1/2/3/4, proveniência de build validada externamente ou atestação keyless.
@@ -135,7 +137,7 @@ Para esse tipo de garantia remota, complemente com as implementações oficiais 
 
 ## Qualidade e segurança
 
-O workflow `.github/workflows/ci.yml` executa **Node.js 22 e 24** em **Ubuntu, Windows e macOS**, com análise sintática, testes de regressão criptográficos e adversariais, empacotamento e auditoria npm. A aprovação local não deve ser confundida com o resultado futuro do GitHub Actions até que o repositório esteja publicado e o workflow seja executado.
+O workflow `.github/workflows/ci.yml` executa **Node.js 22 e 24** em **Ubuntu, Windows e macOS**, com análise sintática, testes de regressão criptográficos e adversariais, empacotamento e auditoria npm. Para resultados reproduzíveis em cada sistema operacional e versão do Node.js, consulte a [matriz GitHub Actions](https://github.com/felipewatter/provenance-gate/actions/workflows/ci.yml). Uma execução local não substitui a validação do commit publicado.
 
 | Documentação | Conteúdo |
 |---|---|
